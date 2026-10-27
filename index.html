@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f2f2f2">
+  <meta name="description" content="Интерактивный прототип расписания ANGFUNK: выбор дня, занятия и отметки посещаемости.">
+  <title>ANGFUNK — расписание</title>
+  <link rel="preload" href="./assets/MedeoSansVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <main class="phone" aria-label="Расписание занятий">
+    <div class="scroll-content" id="scroll-content">
+      <section id="today-view" aria-label="Сегодня">
+        <div class="overview">
+          <div class="date-header"><h1>Октябрь</h1>
+            <div class="week-viewport"><div class="week" role="group" aria-label="Выберите день октября">
+              <span class="day-ink" aria-hidden="true"><span class="day-liquid day-liquid-tail"></span><span class="day-liquid"></span></span>
+              <button class="day outlined" data-day="14" aria-pressed="false" aria-label="14 октября, понедельник"><span>14</span><small>Пн</small></button>
+              <button class="day selected" data-day="15" aria-pressed="true" aria-label="15 октября, вторник"><span>15</span><small>Вт</small></button>
+              <button class="day" data-day="16" aria-pressed="false" aria-label="16 октября, среда"><span>16</span><small>Ср</small></button>
+              <button class="day" data-day="17" aria-pressed="false" aria-label="17 октября, четверг"><span>17</span><small>Чт</small></button>
+              <button class="day" data-day="18" aria-pressed="false" aria-label="18 октября, пятница"><span>18</span><small>Пт</small></button>
+              <button class="day" data-day="19" aria-pressed="false" aria-label="19 октября, суббота"><span>19</span><small>Сб</small></button>
+              <button class="day" data-day="20" aria-pressed="false" aria-label="20 октября, воскресенье"><span>20</span><small>Вс</small></button>
+            </div></div>
+          </div>
+          <div class="next-section"><p class="eyebrow">Ближайшее занятие</p>
+            <article class="lesson-card" id="lesson-card">
+              <div class="card-title"><p id="next-time" class="time">18:00 - 19:00</p><h2 id="next-title">Группа ANGFUNK</h2></div>
+              <div class="card-meta"><span id="next-room">Малый зал</span><span>16 учеников</span></div>
+              <div class="counters" aria-label="Ответы учеников">
+                <button data-filter="yes"><strong id="count-yes">12</strong><span>Будут</span></button>
+                <button data-filter="no"><strong id="count-no">2</strong><span>Не будут</span></button>
+                <button data-filter="pending"><strong id="count-pending">2</strong><span>Без ответа</span></button>
+              </div>
+              <button class="lesson-cta" id="open-lesson"><span>Перейти к занятию</span><span class="arrow-circle"><img src="./assets/arrow.svg" alt=""></span></button>
+            </article>
+          </div>
+        </div>
+        <section class="lesson-list" aria-label="Остальные занятия"><p class="eyebrow">Ближайшее занятие</p><div id="lesson-rows"></div></section>
+      </section>
+      <section id="calendar-view" class="calendar-view" hidden aria-label="Календарь">
+        <div class="calendar-heading"><p class="eyebrow">Расписание</p><h1>Октябрь</h1></div>
+        <div class="month-card"><div class="weekday-labels" aria-hidden="true"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div><div class="month-grid" id="month-grid" role="group" aria-label="Дни октября"></div><p class="calendar-hint"><span></span> Есть занятия</p></div>
+        <div class="calendar-agenda"><h2 id="agenda-title">15 октября</h2><div id="agenda-rows"></div></div>
+      </section>
+    </div>
+    <nav class="bottom-nav" aria-label="Основная навигация">
+      <span class="nav-ink" aria-hidden="true"><span class="nav-liquid nav-liquid-tail"></span><span class="nav-liquid"></span></span>
+      <button class="nav-button active" data-view="today" aria-label="Сегодня" aria-current="page"><span class="icon-box"><img class="home-icon" src="./assets/home.svg" alt=""></span></button>
+      <button class="nav-button" data-view="calendar" aria-label="Расписание"><span class="icon-box"><img class="calendar-icon" src="./assets/calendar.svg" alt=""></span></button>
+    </nav>
+  </main>
+  <dialog id="lesson-dialog" aria-labelledby="detail-title">
+    <div class="sheet">
+      <div class="drag-area" aria-hidden="true"><span></span></div>
+      <div class="sheet-header"><p class="eyebrow" id="detail-date">15 октября</p><button class="close-button" aria-label="Закрыть занятие">×</button></div>
+      <p class="time" id="detail-time"></p><h2 id="detail-title"></h2><p class="detail-meta" id="detail-meta"></p>
+      <div class="detail-tabs" role="group" aria-label="Фильтр учеников"><button data-status="all" aria-pressed="true">Все <span>16</span></button><button data-status="yes" aria-pressed="false">Будут</button><button data-status="no" aria-pressed="false">Не будут</button><button data-status="pending" aria-pressed="false">Без ответа</button></div>
+      <div class="student-list" id="student-list"></div>
+      <p class="demo-note">Демо-данные · изменения сохраняются на этом устройстве</p>
+    </div>
+  </dialog>
+  <svg class="effect-definitions" width="0" height="0" aria-hidden="true" focusable="false"><defs><filter id="liquid-merge" x="-30%" y="-50%" width="160%" height="200%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/><feColorMatrix in="blur" type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 20 -9"/><feComposite in="SourceGraphic" operator="atop"/></filter></defs></svg>
+  <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+</body>
+</html>
